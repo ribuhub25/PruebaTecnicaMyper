@@ -1,0 +1,361 @@
+﻿@model PruebaTecnicaMyper.UI.ViewModels.TrabajadorViewModel
+
+<div class="modal fade" id="mTrabajador" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form id="frmTrabajador" data-url="@Url.Action(Model.Id == 0 ? "CrearTrabajador" : "ModificarTrabajador", "Home")">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(Model.Id != 0 ? "Editar Trabajador" : "Nuevo Trabajador")
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    @if (Model.Id != 0)
+                    {
+                        <input type="hidden" asp-for="Id" name="Id"/>
+                    }
+                    <div class="d-flex">
+                        <div class="col-4 has-validation mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="ddlDocumentType" name="TipoDocumento" asp-for="TipoDocumento">
+                                    <option selected disabled>--Seleccione--</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="CE">CE</option>
+                                    <option value="PTP">PTP</option>
+                                </select>
+                                <label for="ddlDocumentType">Tipo de Documento</label>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-8 has-validation mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" placeholder="2342354" name="NumeroDocumento" asp-for="NumeroDocumento">
+                                <label for="txtDocumentNumber">Numero de Documento</label>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="has-validation mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="txtNames" name="Nombres" asp-for="Nombres">
+                            <label for="txtNames">Nombres</label>
+                        </div>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="rdM" value="M" checked asp-for="Sexo">
+                            <label class="form-check-label" for="rdM">Masculino</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sexo" id="rdF" value="F" asp-for="Sexo">
+                            <label class="form-check-label" for="rdF">Femenino</label>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-4 has-validation mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="ddlState" aria-label="Departamento" name="IdDepartamento" asp-items="ViewBag.Departamentos" asp-for="IdDepartamento">
+                                    <option value="0" selected disabled>--Seleccione--</option>
+                                </select>
+                                <label for="ddlState">Departamento</label>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-4 has-validation mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="ddlProvince" aria-label="Provincia" name="IdProvincia" asp-for="IdProvincia">
+                                    <option value="0" selected>--Seleccione--</option>
+                                </select>
+                                <label for="ddlProvince">Provincia</label>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-4 has-validation mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="ddlDistrict" aria-label="Distrito" name="IdDistrito" asp-for="IdDistrito">
+                                    <option value="0" selected>--Seleccione--</option>
+                                </select>
+                                <label for="ddlDistrict">Distrito</label>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">
+                        @(Model.Id != 0 ? "Actualizar" : "Registrar")
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@if (Model.Id != 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#frmTrabajador").on("submit", function (e) {
+                e.preventDefault();
+
+                const form = this;
+                const url = $(form).data("url");
+                const formData = new FormData(form);
+                console.log(formData);
+                fetch(url, {
+                    method: "PUT",
+                    body: formData
+                }).then(response => {
+                    if (!response.ok) throw new Error("Error HTTP: " + response.status);
+                    return response.json();
+                }).then(response => {
+                    console.log(response);
+                    if (response.success) {
+                        $('#mTrabajador').modal('hide');
+                        Swal.fire({
+                            title: "Modificado!",
+                            text: response.message,
+                            icon: "success"
+                        }).then(function () {
+                            $('#tblTrabajadores').DataTable().ajax.reload();
+                        });
+                    } else {
+                        $(".form-control").removeClass("is-invalid");
+                        $(".form-floating").removeClass("is-invalid");
+                        $(".form-select").removeClass("is-invalid");
+                        $(".invalid-feedback").text("");
+
+                        $.each(response.errors, function (field, messages) {
+                            const input = $('[name="' + field + '"]');
+                            console.log(input);
+                            input.addClass("is-invalid");
+                            input.closest(".form-floating").addClass("is-invalid");
+                            input.closest(".has-validation")
+                                .find(".invalid-feedback")
+                                .text(messages[0]);
+                        });
+                    }
+                })
+                    .catch(error => {
+                        console.error("Error en fetch:", error);
+                        Swal.fire("Oops...", "Ocurrió un error al guardar.", "error");
+                    });
+            });
+        });
+        $(document).ready(function () {
+            const getProvincias = fetch(`@Url.Action("GetProvincias", "Home")?departamentoId=${@Model.IdDepartamento}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                return response.json();
+            }).then(response => {
+                const data = response.data;
+                $.each(data, function (index, item) {
+                    $("#ddlProvince").append(
+                        $('<option>', {
+                            value: item.value,
+                            text: item.text
+                        })
+                    );
+                });
+                $("#ddlProvince").val(@Model.IdProvincia);
+            });
+            const getDistritos = fetch(`@Url.Action("GetDistritos", "Home")?provinciaId=${@Model.IdProvincia}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                return response.json();
+            }).then(response => {
+                const data = response.data;
+                $.each(data, function (index, item) {
+                    $("#ddlDistrict").append(
+                        $('<option>', {
+                            value: item.value,
+                            text: item.text
+                        })
+                    );
+                });
+                $("#ddlDistrict").val(@Model.IdDistrito);
+            });
+        });
+        $("#ddlState").change(function () {
+            var departamentoId = $(this).val();
+            if (departamentoId === "") {
+                $("#ddlState").empty().append('<option value="0" selected>--Seleccione--</option>');
+                return;
+            }
+            try {
+                const response = fetch(`@Url.Action("GetProvincias", "Home")?departamentoId=${departamentoId}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(response => {
+                    const data = response.data;
+                    $('#ddlProvince').empty().append('<option value="0" selected disabled>--Seleccione--</option>');
+                    $('#ddlDistrict').empty().append('<option value="0" selected disabled>--Seleccione--</option>');
+                    $.each(data, function (index, item) {
+                        $("#ddlProvince").append(
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
+                        );
+                    });
+                });
+            } catch (error) {
+                console.log("Error al cargar las provincias", error);
+            }
+        });
+        $("#ddlProvince").change(function () {
+            var provinciaId = $(this).val();
+            if (provinciaId === "") {
+                $("#ddlDistrict").empty().append('<option value="0" selected>--Seleccione--</option>');
+                return;
+            }
+            try {
+                const response = fetch(`@Url.Action("GetDistritos", "Home")?provinciaId=${provinciaId}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(response => {
+                    const data = response.data;
+                    $('#ddlDistrict').empty().append('<option value="0" selected disabled>--Seleccione--</option>');
+                    $.each(data, function (index, item) {
+                        console.log(item);
+                        $("#ddlDistrict").append(
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
+                        );
+                    });
+                });
+            } catch (error) {
+                console.log("Error al cargar los distritos", error);
+            }
+        });
+    </script>
+}else{
+    <script type="text/javascript">
+        $(function () {
+            $("#frmTrabajador").on("submit", function (e) {
+                e.preventDefault();
+
+                const form = this;
+                const url = $(form).data("url");
+                const formData = new FormData(form);
+                fetch(url, {
+                    method: "POST",
+                    body: formData
+                }).then(response => {
+                        if (!response.ok) throw new Error("Error HTTP: " + response.status);
+                        return response.json();
+                    }).then(response => {
+                        if (response.success) {
+                            $('#mTrabajador').modal('hide');
+                            Swal.fire({
+                                title: "Creado!",
+                                text: response.message,
+                                icon: "success"
+                            }).then(function () { 
+                                $('#tblTrabajadores').DataTable().ajax.reload();
+                            });
+                        } else {
+                            $(".form-control").removeClass("is-invalid");
+                            $(".form-floating").removeClass("is-invalid");
+                            $(".form-select").removeClass("is-invalid");
+                            $(".invalid-feedback").text("");
+
+                            $.each(response.errors, function (field, messages) {
+                                const input = $('[name="' + field + '"]');
+                                console.log(input);
+                                input.addClass("is-invalid");
+                                input.closest(".form-floating").addClass("is-invalid");
+                                input.closest(".has-validation")
+                                    .find(".invalid-feedback")
+                                    .text(messages[0]);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error en fetch:", error);
+                        Swal.fire("Oops...", "Ocurrió un error al guardar.", "error");
+                    });
+            });
+        });
+        $("#ddlState").change(function () {
+            var departamentoId = $(this).val();
+            if (departamentoId === "") {
+                $("#ddlState").empty().append('<option value="0" selected>--Seleccione--</option>');
+                return;
+            }
+            try {
+                const response = fetch(`@Url.Action("GetProvincias", "Home")?departamentoId=${departamentoId}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(response => {
+                    const data = response.data;
+                    $('#ddlProvince').empty().append('<option value="0" selected disabled>--Seleccione--</option>');
+                    $('#ddlDistrict').empty().append('<option value="0" selected disabled>--Seleccione--</option>');
+                    $.each(data, function (index, item) {
+                        $("#ddlProvince").append(
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
+                        );
+                    });
+                });
+            } catch (error) {
+                console.log("Error al cargar las provincias", error);
+            }
+        });
+        $("#ddlProvince").change(function () {
+            var provinciaId = $(this).val();
+            if (provinciaId === "") {
+                $("#ddlDistrict").empty().append('<option value="0" selected>--Seleccione--</option>');
+                return;
+            }
+            try {
+                const response = fetch(`@Url.Action("GetDistritos", "Home")?provinciaId=${provinciaId}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(response => {
+                    const data = response.data;
+                    $('#ddlDistrict').empty().append('<option value="0" selected disabled>--Seleccione--</option>');
+                    $.each(data, function (index, item) {
+                        console.log(item);
+                        $("#ddlDistrict").append(
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
+                        );
+                    });
+                });
+            } catch (error) {
+                console.log("Error al cargar los distritos", error);
+            }
+        });
+    </script>
+}
+

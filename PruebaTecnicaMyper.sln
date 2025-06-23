@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruebaTecnicaMyper.BLL", "PruebaTecnicaMyper.BLL\PruebaTecnicaMyper.BLL.csproj", "{8BBDE01A-D1D0-4911-A7E1-277B0B82B0FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F91D974-7F49-4E3A-9C7B-20696C8C7044} = {0F91D974-7F49-4E3A-9C7B-20696C8C7044}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruebaTecnicaMyper.DAL", "PruebaTecnicaMyper.DAL\PruebaTecnicaMyper.DAL.csproj", "{0F91D974-7F49-4E3A-9C7B-20696C8C7044}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F7D78C82-459E-4BDC-B302-5F2603981A17} = {F7D78C82-459E-4BDC-B302-5F2603981A17}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruebaTecnicaMyper.UI", "PruebaTecnicaMyper.UI\PruebaTecnicaMyper.UI.csproj", "{96F83D15-686C-4DFB-A526-2E67C8CB838A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruebaTecnicaMyper.Domain", "PruebaTecnicaMyper.Domain\PruebaTecnicaMyper.Domain.csproj", "{F7D78C82-459E-4BDC-B302-5F2603981A17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PruebaTecnicaMyper.DB", "PruebaTecnicaMyper.DB", "{CC966B01-E870-44F7-9381-83BD5688FDBE}"
+	ProjectSection(SolutionItems) = preProject
+		sp_pMAINGET_TrabajadoresSelect.sql = sp_pMAINGET_TrabajadoresSelect.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BBDE01A-D1D0-4911-A7E1-277B0B82B0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BBDE01A-D1D0-4911-A7E1-277B0B82B0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BBDE01A-D1D0-4911-A7E1-277B0B82B0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BBDE01A-D1D0-4911-A7E1-277B0B82B0FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F91D974-7F49-4E3A-9C7B-20696C8C7044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F91D974-7F49-4E3A-9C7B-20696C8C7044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F91D974-7F49-4E3A-9C7B-20696C8C7044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F91D974-7F49-4E3A-9C7B-20696C8C7044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F83D15-686C-4DFB-A526-2E67C8CB838A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F83D15-686C-4DFB-A526-2E67C8CB838A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F83D15-686C-4DFB-A526-2E67C8CB838A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F83D15-686C-4DFB-A526-2E67C8CB838A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D78C82-459E-4BDC-B302-5F2603981A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D78C82-459E-4BDC-B302-5F2603981A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D78C82-459E-4BDC-B302-5F2603981A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D78C82-459E-4BDC-B302-5F2603981A17}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9609E44-48BC-4648-BA29-240B11C6ACBD}
+	EndGlobalSection
+EndGlobal
