@@ -23,7 +23,7 @@ BEGIN
 		INNER JOIN Distrito di ON t.IdDistrito = di.Id '
 	IF @P_SEXO != ''
 	BEGIN
-		SET @L_WHERE = N' WHERE t.Sexo = ' + @P_SEXO	
+		SET @L_WHERE = N' WHERE t.Sexo= ' + CHAR(39) + CONVERT(VARCHAR, @P_SEXO) + CHAR(39)	
 	END
 	BEGIN TRY
 		EXECUTE(@L_QUERY + @L_WHERE)
