@@ -155,7 +155,7 @@
                         var Buttons = "";
                         if (row.id > 0) {
                             Buttons += `<a class='btn btn-primary btn-sm px-2' onclick=showModal(${row.id})>Editar</a>`;
-                            Buttons += `<a class='btn btn-danger btn-sm px-2' onclick=DeleteTrabajador(${row.id},'${row.nombres}')>Eliminar</a>`;
+                            Buttons += `<a class='btn btn-danger btn-sm px-2' onclick=DeleteTrabajador(${row.id},'${row.numeroDocumento}')>Eliminar</a>`;
                         }
                         return Buttons;
                     }
@@ -181,7 +181,7 @@
     }
     function DeleteTrabajador(id, txt) {
         Swal.fire({
-            title: `¿Está seguro de eliminar el registro: ${txt}?`,
+            title: `¿Está seguro de eliminar el registro de Nro Doc. ${txt}?`,
             text: "No podrá revertir los cambios despues!",
             icon: "warning",
             showCancelButton: true,
